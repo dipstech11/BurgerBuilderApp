@@ -19,7 +19,18 @@ class BurgerBuilder extends Component{
       cheese:0,
       meat:0
     },
-    totalPrice :50
+    totalPrice :50,
+    purchasable:false
+  }
+
+  isPurchasable = (tempingredient) =>{
+
+    const sum = Object.keys(tempingredient).map((ikey) =>{
+      return tempingredient[ikey]
+    }).reduce((sum, el)=>{
+      return sum + el
+    },0)
+    this.setState({purchasable:sum>0})
   }
 
   addIngredient = (type) => {
@@ -37,16 +48,52 @@ class BurgerBuilder extends Component{
         totalPrice:updatedPrice
       }
     )
+    this.isPurchasable(updatedIngredient)
   }
+
+deleteIngredient = (type) => {
+  const oldCount = this.state.ingredients[type]
+  if (oldCount <= 0){
+    return
+  }
+  const updatedCount =oldCount - 1
+  const updatedIngredient = {
+    ...this.state.ingredients
+  }
+  updatedIngredient[type] = updatedCount
+  const priceDeduction   = INGREDIENT_PRICES[type]
+  const updatedPrice = this.state.totalPrice - priceDeduction
+  this.setState(
+    {
+      ingredients:updatedIngredient,
+      totalPrice:updatedPrice
+    }
+  )
+  this.isPurchasable(updatedIngredient)
+}
 
 
   render()
     {
+      const disabledInfo = {
+        ...this.state.ingredients
+      }
+      //disabledInfo = {salad:true, meat:false....}
+
+      for (let key in disabledInfo){
+        disabledInfo[key] = disabledInfo[key] <=0
+      }
+
+
       return (
           <Auxx>
           <Burger ingredients = {this.state.ingredients}/>
           <BuildControls
           ingredientAdded ={this.addIngredient}
+          ingredientDeleted = {this.deleteIngredient}
+          disabled = {disabledInfo }
+          price = {this.state.totalPrice}
+          purchasable = {this.state.purchasable}
           />
           </Auxx>
       );
