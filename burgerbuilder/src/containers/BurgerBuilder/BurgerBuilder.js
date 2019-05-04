@@ -45,7 +45,7 @@ class BurgerBuilder extends Component{
     this.setState(
       {
         ingredients:updatedIngredient,
-        totalPrice:updatedPrice
+        totalPrice:upHdatedPrice
       }
     )
     this.isPurchasable(updatedIngredient)
