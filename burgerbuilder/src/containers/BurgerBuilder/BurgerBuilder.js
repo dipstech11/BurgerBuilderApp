@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import Auxx from '../../hoc/auxx'
 import Burger from '../../components/Burger/Burger'
 import BuildControls from '../../components/Burger/BuildControls/BuildControls'
+import Modal from '../../components/UI/Modal/Modal'
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary'
 
 
 const INGREDIENT_PRICES = {
@@ -45,7 +47,7 @@ class BurgerBuilder extends Component{
     this.setState(
       {
         ingredients:updatedIngredient,
-        totalPrice:upHdatedPrice
+        totalPrice:updatedPrice
       }
     )
     this.isPurchasable(updatedIngredient)
@@ -87,14 +89,17 @@ deleteIngredient = (type) => {
 
       return (
           <Auxx>
+          <Modal >
+            <OrderSummary ingredients ={this.state.ingredients}/>
+          </Modal>
           <Burger ingredients = {this.state.ingredients}/>
           <BuildControls
           ingredientAdded ={this.addIngredient}
           ingredientDeleted = {this.deleteIngredient}
           disabled = {disabledInfo }
           price = {this.state.totalPrice}
-          purchasable = {this.state.purchasable}
-          />
+          purchasable = {this.state.purchasable}  />
+
           </Auxx>
       );
     }
