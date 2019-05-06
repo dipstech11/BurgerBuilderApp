@@ -3,9 +3,9 @@ import Auxx from '../../../hoc/auxx'
 
 const orderSummary = (props) => {
   const ingredientSummary = Object.keys(props.ingredients)
-  .map(keys => {
-     return <li keys={keys}>
-     <span style={{textTranform:'capitalize'}}>{keys} </span>: {props.ingredients[keys]} </li>
+  .map(igkey => {
+     return <li key={igkey}>
+     <span style={{textTranform:'capitalize'}}>{igkey} </span>: {props.ingredients[igkey]} </li>
   })
 
 return (

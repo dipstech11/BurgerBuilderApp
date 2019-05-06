@@ -22,7 +22,12 @@ class BurgerBuilder extends Component{
       meat:0
     },
     totalPrice :50,
-    purchasable:false
+    purchasable:false,
+    purchasing: false
+  }
+
+  purchaseHandler = () => {
+    this.setState({purchasing:true})
   }
 
   isPurchasable = (tempingredient) =>{
@@ -89,16 +94,20 @@ deleteIngredient = (type) => {
 
       return (
           <Auxx>
-          <Modal >
+          <Modal show={this.state.purchasing} >
             <OrderSummary ingredients ={this.state.ingredients}/>
           </Modal>
+
+}
           <Burger ingredients = {this.state.ingredients}/>
           <BuildControls
           ingredientAdded ={this.addIngredient}
           ingredientDeleted = {this.deleteIngredient}
           disabled = {disabledInfo }
           price = {this.state.totalPrice}
-          purchasable = {this.state.purchasable}  />
+          purchasable = {this.state.purchasable}
+          ordered = {this.purchaseHandler}
+           />
 
           </Auxx>
       );

@@ -1,5 +1,5 @@
 import React from 'react';
-import Auxx from '../../hoc/auxx'
+// import Auxx from '../../hoc/auxx'
 import classes from './Burger.css'
 import BurgerIngredient from './BurgerIngredient/BurgerIngredient'
 
