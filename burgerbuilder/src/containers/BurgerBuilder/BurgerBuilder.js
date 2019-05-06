@@ -34,6 +34,10 @@ class BurgerBuilder extends Component{
     this.setState({purchasing:false})
   }
 
+  purchaseHandlerContinue = () =>  {
+    alert('Order is Successfull')
+  }
+
   isPurchasable = (tempingredient) =>{
 
     const sum = Object.keys(tempingredient).map((ikey) =>{
@@ -100,7 +104,12 @@ deleteIngredient = (type) => {
           <Auxx>
           <Modal show={this.state.purchasing}
           hideModal = {this.purchaseHandlerCancel} >
-            <OrderSummary ingredients ={this.state.ingredients}/>
+            <OrderSummary
+            ingredients ={this.state.ingredients}
+            cancelled = {this.purchaseHandlerCancel}
+            continued = {this.purchaseHandlerContinue}
+            price = {this.state.totalPrice}
+            />
           </Modal>
 
 }
