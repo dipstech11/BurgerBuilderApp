@@ -30,6 +30,10 @@ class BurgerBuilder extends Component{
     this.setState({purchasing:true})
   }
 
+  purchaseHandlerCancel = () => {
+    this.setState({purchasing:false})
+  }
+
   isPurchasable = (tempingredient) =>{
 
     const sum = Object.keys(tempingredient).map((ikey) =>{
@@ -94,7 +98,8 @@ deleteIngredient = (type) => {
 
       return (
           <Auxx>
-          <Modal show={this.state.purchasing} >
+          <Modal show={this.state.purchasing}
+          hideModal = {this.purchaseHandlerCancel} >
             <OrderSummary ingredients ={this.state.ingredients}/>
           </Modal>
 
