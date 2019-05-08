@@ -5,6 +5,7 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls'
 import Modal from '../../components/UI/Modal/Modal'
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary'
 import axios from '../../axios-orders'
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler'
 import Spinner from '../../components/UI/Spinner/Spinner'
 
 
@@ -60,7 +61,7 @@ class BurgerBuilder extends Component{
     //purchasing is set to false here, bcuse if not then modal (checkout) will never gone
     //and will not be able to make new order
     // alert("Ordered is placed")
-    console.log("Order Placed Successfully")
+    // console.log("Order Placed Successfully")
   })
     .catch(error => {console.log(error)
       this.setState({loading:false, purchasing:false})
@@ -167,4 +168,4 @@ deleteIngredient = (type) => {
 
 }
 
-export default BurgerBuilder
+export default withErrorHandler(BurgerBuilder, axios)
