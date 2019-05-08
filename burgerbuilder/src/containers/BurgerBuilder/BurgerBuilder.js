@@ -18,16 +18,21 @@ const INGREDIENT_PRICES = {
 
 class BurgerBuilder extends Component{
   state = {
-    ingredients:{
-      salad:0,
-      bacon:0,
-      cheese:0,
-      meat:0
-    },
+    ingredients:null,
     totalPrice :50,
     purchasable:false,
     purchasing: false,
-    loading:false
+    loading:false,
+    error:false
+  }
+
+  componentDidMount() {
+    axios.get("https://burgerbuilder-1aa84.firebaseio.com/ingredients")
+    .then(res =>{
+      this.setState({ingredients:res.data})
+    }).catch(error => {
+      this.setState({error:true})
+    })
   }
 
   purchaseHandler = () => {
@@ -129,17 +134,35 @@ deleteIngredient = (type) => {
         disabledInfo[key] = disabledInfo[key] <=0
       }
 
-      let orderSummary =   <OrderSummary
-        ingredients ={this.state.ingredients}
-        cancelled = {this.purchaseHandlerCancel}
-        continued = {this.purchaseHandlerContinue}
-        price = {this.state.totalPrice}
-        />
+      let orderSummary = null
+      let burger = this.state.error? <h3 style={{textAlign:"center"}}>ingredients can't be loaded </h3> :< Spinner />
+
+      if (this.state.ingredients){
+        burger = (
+          <Auxx>
+            <Burger ingredients = {this.state.ingredients}/>
+              <BuildControls
+              ingredientAdded ={this.addIngredient}
+              ingredientDeleted = {this.deleteIngredient}
+              disabled = {disabledInfo }
+              price = {this.state.totalPrice}
+              purchasable = {this.state.purchasable}
+              ordered = {this.purchaseHandler}
+             />
+          </Auxx>
+        )
+        orderSummary = <OrderSummary
+          ingredients ={this.state.ingredients}
+          cancelled = {this.purchaseHandlerCancel}
+          continued = {this.purchaseHandlerContinue}
+          price = {this.state.totalPrice}
+          />
+
+      }
 
         if (this.state.loading){
-          orderSummary = <Spinner />
-        }
-
+                orderSummary = <Spinner />
+          }
 
       return (
           <Auxx >
@@ -149,17 +172,7 @@ deleteIngredient = (type) => {
               {orderSummary}
 
           </Modal>
-
-}
-          <Burger ingredients = {this.state.ingredients}/>
-          <BuildControls
-          ingredientAdded ={this.addIngredient}
-          ingredientDeleted = {this.deleteIngredient}
-          disabled = {disabledInfo }
-          price = {this.state.totalPrice}
-          purchasable = {this.state.purchasable}
-          ordered = {this.purchaseHandler}
-           />
+            {burger}
 
           </Auxx>
       );
