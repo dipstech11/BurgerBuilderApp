@@ -45,32 +45,20 @@ class BurgerBuilder extends Component{
 
   purchaseHandlerContinue = () =>  {
     // alert('Order is Successfull')
-    this.setState({loading:true})
-    const order = {
-        ingredients:this.state.ingredients,
-        price:this.state.totalPrice,
-        customer :{
-          name:"Deepak Yadav",
-          address:{
-            street:"Lane No. 10",
-            city:"Pune",
-            zipcode:"48490",
-          },
-          email:"dipstech2020@gmail.com",
-        },
-        deliveryMethod:"fastest"
-    }
-    axios.post("/orders.json", order)
-    .then(response=>{console.log(response)
-    this.setState({loading:false, purchasing:false})
     //purchasing is set to false here, bcuse if not then modal (checkout) will never gone
     //and will not be able to make new order
-    // alert("Ordered is placed")
-    // console.log("Order Placed Successfully")
+
+  const queryParams = []
+  for (let i in this.state.ingredients){
+    queryParams.push(encodeURIComponent(i) + "=" + encodeURIComponent(this.state.ingredients[i]))
+  }
+  queryParams.push('price=' + this.state.totalPrice)
+  const queryString = queryParams.join("&")
+
+  this.props.history.push({
+    pathname:"/checkout",
+    search:"?" + queryString
   })
-    .catch(error => {console.log(error)
-      this.setState({loading:false, purchasing:false})
-    })
   }
 
   isPurchasable = (tempingredient) =>{
